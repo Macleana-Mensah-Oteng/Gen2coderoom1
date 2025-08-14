@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to create IAM Role for CI/CD pipeline with full access to necessary AWS services
+
+Resources:
+  CICDPipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: Gen2generalrole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+                - codebuild.amazonaws.com
+                - codedeploy.amazonaws.com
+                - cloudformation.amazonaws.com
+            Action: sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: Gengen
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - codepipeline:*
+                  - codebuild:*
+                  - codecommit:*
+                  - codedeploy:*
+                  - cloudformation:*
+                  - iam:PassRole
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:ListBucket
+                Resource: "*"
+
+Outputs:
+  CICDPipelineRoleArn:
+    Value: !GetAtt CICDPipelineRole.Arn
+    Description: ARN of the IAM Role for CI/CD pipeline services
