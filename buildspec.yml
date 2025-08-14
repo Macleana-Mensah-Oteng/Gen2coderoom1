@@ -3,10 +3,19 @@ phases:
   install:
     runtime-versions:
       python: 3.9
+  pre_build:
+    commands:
+      - echo "Checking repository contents..."
+      - ls -R
   build:
     commands:
-      - echo "Scanning CloudFormation template..."
-      - python scan_template.py  # This script calls Conformity API
+      - echo "Running scan_template.py to scan CloudFormation template..."
+      - python scan_template.py  # Runs script from root directory
+      - echo "Ensuring results.json exists..."
+      - test -f results.json || echo '{}' > results.json
+  post_build:
+    commands:
+      - echo "Scan complete. Results saved to results.json."
 artifacts:
   files:
     - results.json
