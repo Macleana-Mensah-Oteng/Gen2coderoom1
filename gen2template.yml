@@ -38,5 +38,5 @@ Resources:
 
 Outputs:
   CICDPipelineRoleArn:
-    Value: !GetAtt CICDPipelineRole.Arn
+    Value: !GetAtt [CICDPipelineRole, Arn]
     Description: ARN of the IAM Role for CI/CD pipeline services
